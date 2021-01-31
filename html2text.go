@@ -6,13 +6,18 @@ import (
 	"regexp"
 	"strings"
 	"unicode"
+"strconv"
 
 	"github.com/olekukonko/tablewriter"
 	"github.com/ssor/bom"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
-
+type Link struct {
+Text string
+Href string
+}
+var Links []Link
 // Options provide toggles and overrides to control specific rendering behaviors.
 type Options struct {
 	PrettyTables        bool                 // Turns on pretty ASCII rendering for table elements.
@@ -68,7 +73,7 @@ func FromHTMLNode(doc *html.Node, o ...Options) (string, error) {
 	if len(o) > 0 {
 		options = o[0]
 	}
-
+Links = nil
 	ctx := textifyTraverseContext{
 		buf:     bytes.Buffer{},
 		options: options,
@@ -252,6 +257,7 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 
 		hrefLink := ""
 		if attrVal := getAttrVal(node, "href"); attrVal != "" {
+			Links = append(Links, Link{Text: linkText, Href: attrVal})
 			attrVal = ctx.normalizeHrefLink(attrVal)
 			// Don't print link href if it matches link element content or if the link is empty.
 			if !ctx.options.OmitLinks && attrVal != "" && linkText != attrVal {
@@ -259,6 +265,7 @@ func (ctx *textifyTraverseContext) handleElement(node *html.Node) error {
 			}
 		}
 
+hrefLink = hrefLink + " (link" + strconv.Itoa(len(Links)) + ")"
 		return ctx.emit(hrefLink)
 
 	case atom.P, atom.Ul:

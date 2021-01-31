@@ -1,5 +1,6 @@
 # html2text
-
+warning: this fork is customized for my specific needs, in particular to build list of all links in the document.
+you will prefer to use upstream variant in most cases.
 [![Documentation](https://godoc.org/github.com/jaytaylor/html2text?status.svg)](https://godoc.org/github.com/jaytaylor/html2text)
 [![Build Status](https://travis-ci.org/jaytaylor/html2text.svg?branch=master)](https://travis-ci.org/jaytaylor/html2text)
 [![Report Card](https://goreportcard.com/badge/github.com/jaytaylor/html2text)](https://goreportcard.com/report/github.com/jaytaylor/html2text)
